@@ -1,0 +1,41 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "requirements.txt",
+            "use": "@vercel/python",
+            "config": {
+                "requirePip": true
+            }
+        },
+        {
+            "src": "realtime_server.py",
+            "use": "@vercel/python",
+            "config": {
+                "maxLambdaSize": "15mb",
+                "runtime": "python3.10"
+            }
+        },
+        {
+            "src": "static/",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/v1/(.*)",
+            "dest": "realtime_server.py"
+        },
+        {
+            "src": "/static/(.*)",
+            "dest": "static/$1"
+        },
+        {
+            "src": "/",
+            "dest": "static/realtime.html"
+        }
+    ],
+    "env": {
+        "OPENAI_API_KEY": "openai_api_key"
+    }
+}
